@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
+import { toast } from 'vue-sonner'
 import { z } from 'zod'
+
+const isLoading = ref(false)
 
 const formSchema = toTypedSchema(z.object({
   name: z.string({ error: 'Name is required' }).min(1, { message: 'Name is required' }),
@@ -13,13 +16,30 @@ const form = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = form.handleSubmit((values) => {
-  console.log('Form submitted!', values)
+const onSubmit = form.handleSubmit(async (values) => {
+  await authClient.signUp.email({
+    name: values.name,
+    email: values.email,
+    password: values.password,
+    callbackURL: '/sign-in',
+  }, {
+    onRequest: () => {
+      isLoading.value = true
+    },
+    onSuccess: () => {
+      toast.success('Sign up successful! Please check your email to verify your account.')
+      isLoading.value = false
+    },
+    onError: (ctx) => {
+      toast.error(ctx.error.message || 'An error occurred during sign up')
+      isLoading.value = false
+    },
+  })
 })
 </script>
 
 <template>
-  <Card class="w-full h-full md:w-[487px] border-none shadow-none">
+  <Card class="w-full h-full md:w-[487px] border-none shadow-none gap-0">
     <CardHeader class="flex flex-col items-center justify-center text-center p-7">
       <CardTitle class="text-2xl">
         Sign Up
@@ -80,8 +100,8 @@ const onSubmit = form.handleSubmit((values) => {
             <FormMessage />
           </FormItem>
         </FormField>
-        <Button size="lg" class="w-full" :disabled="false">
-          Login
+        <Button size="lg" class="w-full" :disabled="isLoading">
+          Sign Up
         </Button>
       </form>
     </CardContent>
@@ -89,13 +109,13 @@ const onSubmit = form.handleSubmit((values) => {
       <DottedSeparator />
     </div>
     <CardContent class="p-7 flex flex-col gap-y-4">
-      <Button variant="secondary" size="lg" class="w-full" :disabled="false">
+      <Button variant="secondary" size="lg" class="w-full" :disabled="isLoading">
         <Icon name="simple-icons:google" class="mr-2 size-5" />
-        Login with Google
+        Continue with Google
       </Button>
-      <Button variant="secondary" size="lg" class="w-full" :disabled="false">
+      <Button variant="secondary" size="lg" class="w-full" :disabled="isLoading">
         <Icon name="simple-icons:github" class="mr-2 size-5" />
-        Login with GitHub
+        Continue with GitHub
       </Button>
     </CardContent>
     <div class="px-7">
