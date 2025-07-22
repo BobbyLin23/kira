@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.17.0",
+    "@iconify-json/ri": "^1.2.5",
     "@iconify-json/simple-icons": "^1.2.44",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9.31.0"
