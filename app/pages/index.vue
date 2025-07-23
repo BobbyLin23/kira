@@ -3,5 +3,7 @@
 </script>
 
 <template>
-  <div>123</div>
+  <div class="bg-neutral-500 h-full p-4">
+    <WorkspaceCreateForm />
+  </div>
 </template>

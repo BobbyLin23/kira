@@ -3,6 +3,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uuid,
 } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
@@ -57,6 +58,20 @@ export const verification = pgTable('verification', {
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
   expiresAt: timestamp('expires_at').notNull(),
+  createdAt: timestamp('created_at').$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+  updatedAt: timestamp('updated_at').$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+})
+
+export const workspace = pgTable('workspace', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  name: text('name').notNull(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').$defaultFn(
     () => /* @__PURE__ */ new Date(),
   ),
