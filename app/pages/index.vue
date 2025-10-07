@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="bg-neutral-500 h-full p-4">
+  <div class="h-full bg-neutral-500 p-4">
     <WorkspaceCreateForm />
   </div>
 </template>

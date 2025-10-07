@@ -9,3 +9,4 @@
 - PostgresSQL
 - BetterAuth
 - oRPC
+- Supabase Storage

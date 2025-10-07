@@ -1,5 +1,5 @@
 import { protectedProcedure, publicProcedure } from '../utils/orpc'
-import { createWorkspace } from './workspace'
+import { createWorkspace, getWorkspaces } from './workspace'
 
 export const appRouter = {
   healthCheck: publicProcedure.handler(() => {
@@ -13,6 +13,7 @@ export const appRouter = {
   }),
   workspace: {
     create: createWorkspace,
+    get: getWorkspaces,
   },
 }
 

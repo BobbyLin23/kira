@@ -72,6 +72,7 @@ export const workspace = pgTable('workspace', {
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
+  imageUrl: text('image_url').notNull().default(''),
   createdAt: timestamp('created_at').$defaultFn(
     () => /* @__PURE__ */ new Date(),
   ),
